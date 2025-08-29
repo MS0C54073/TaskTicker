@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { ArrowRightLeft } from 'lucide-react';
+import { ArrowRightLeft, ArrowLeftRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
@@ -32,6 +32,11 @@ export function Translator() {
     }
   };
 
+  const handleSwap = () => {
+    setInputText(translatedText);
+    setTranslatedText(inputText);
+  };
+
   return (
     <Card className="w-full shadow-lg rounded-lg">
       <CardHeader>
@@ -41,7 +46,7 @@ export function Translator() {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="grid gap-2">
+        <div className="grid gap-2 relative">
           <label htmlFor="input-text" className="text-sm font-medium text-muted-foreground">English / Russian</label>
           <Textarea
             id="input-text"
@@ -53,15 +58,23 @@ export function Translator() {
           />
         </div>
         
-        <div className="flex justify-center">
-          <Button onClick={handleTranslate} disabled={isLoading || !inputText.trim()}>
-            {isLoading ? 'Translating...' : 'Translate'}
-          </Button>
+        <div className="flex justify-center items-center my-[-8px]">
+            <Button variant="ghost" size="icon" onClick={handleSwap} disabled={isLoading} aria-label="Swap languages">
+                <ArrowLeftRight className="h-5 w-5 text-muted-foreground" />
+            </Button>
         </div>
 
         <div className="grid gap-2">
            <label htmlFor="output-text" className="text-sm font-medium text-muted-foreground">Translation</label>
-           <div className="w-full min-h-[100px] p-3 rounded-md border border-input bg-muted/40 text-base">
+           <Textarea
+             id="output-text"
+             placeholder="Translation will appear here..."
+             value={translatedText}
+             readOnly
+             className="min-h-[100px] text-base bg-muted/40"
+             disabled={isLoading}
+           />
+           <div className="w-full min-h-[100px] p-3 rounded-md border border-input bg-muted/40 text-base hidden">
             {isLoading ? (
                 <div className="space-y-2">
                     <Skeleton className="h-4 w-[80%]" />
@@ -74,6 +87,13 @@ export function Translator() {
             )}
            </div>
         </div>
+        
+        <div className="flex justify-center">
+          <Button onClick={handleTranslate} disabled={isLoading || !inputText.trim()}>
+            {isLoading ? 'Translating...' : 'Translate'}
+          </Button>
+        </div>
+
       </CardContent>
     </Card>
   );
