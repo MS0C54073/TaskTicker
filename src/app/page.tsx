@@ -20,11 +20,7 @@ export type Task = {
 
 export type Filter = "all" | "active" | "completed";
 
-const initialTasks: Task[] = [
-  { id: '1', text: 'Learn Next.js and Tailwind CSS', completed: true, createdAt: Date.now() - 200000 },
-  { id: '2', text: 'Build a beautiful To-Do App', completed: false, createdAt: Date.now() - 100000 },
-  { id: '3', text: 'Deploy to the web', completed: false, createdAt: Date.now() },
-];
+const initialTasks: Task[] = [];
 
 function TodoApp() {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
