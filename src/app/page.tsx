@@ -6,7 +6,6 @@ import TaskInput from "@/components/todo/TaskInput";
 import FilterTabs from "@/components/todo/FilterTabs";
 import TaskList from "@/components/todo/TaskList";
 import TodoFooter from "@/components/todo/TodoFooter";
-import { Translator } from "@/components/todo/Translator";
 import { LanguageProvider } from "@/context/LanguageContext";
 import LanguageSwitcher from "@/components/todo/LanguageSwitcher";
 import { useLanguage } from "@/context/LanguageContext";
@@ -113,8 +112,6 @@ function TodoApp() {
           />
         </CardFooter>
       </Card>
-
-      <Translator />
     </div>
   );
 }
