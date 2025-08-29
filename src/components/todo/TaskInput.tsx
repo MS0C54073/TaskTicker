@@ -4,7 +4,7 @@ import { useState, type KeyboardEvent } from "react";
 import { Plus, Sparkles, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { suggestTask } from "@/ai/flows/suggest-task-flow";
+import { suggestTaskAction } from "@/ai/actions";
 
 interface TaskInputProps {
   onAddTask: (text: string) => void;
@@ -30,7 +30,7 @@ export default function TaskInput({ onAddTask }: TaskInputProps) {
   const handleSuggestTask = async () => {
     setIsSuggesting(true);
     try {
-      const result = await suggestTask();
+      const result = await suggestTaskAction();
       setTaskText(result.task);
     } catch (error) {
       console.error("Failed to suggest task:", error);

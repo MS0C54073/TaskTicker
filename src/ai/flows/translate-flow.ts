@@ -1,8 +1,7 @@
-'use server';
 /**
  * @fileOverview A flow for translating text between English and Russian.
  *
- * - translate - A function that handles the text translation.
+ * - translateFlow - A function that handles the text translation.
  * - TranslateInput - The input type for the translate function.
  * - TranslateOutput - The return type for the translate function.
  */
@@ -10,19 +9,15 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 
-export const TranslateInputSchema = z.object({
+const TranslateInputSchema = z.object({
   text: z.string().describe('The text to translate.'),
 });
 export type TranslateInput = z.infer<typeof TranslateInputSchema>;
 
-export const TranslateOutputSchema = z.object({
+const TranslateOutputSchema = z.object({
   translatedText: z.string().describe('The translated text.'),
 });
 export type TranslateOutput = z.infer<typeof TranslateOutputSchema>;
-
-export async function translate(input: TranslateInput): Promise<TranslateOutput> {
-  return translateFlow(input);
-}
 
 const prompt = ai.definePrompt({
   name: 'translatePrompt',
@@ -37,7 +32,7 @@ Input text: {{{text}}}
 Return ONLY the translated text.`,
 });
 
-const translateFlow = ai.defineFlow(
+export const translateFlow = ai.defineFlow(
   {
     name: 'translateFlow',
     inputSchema: TranslateInputSchema,

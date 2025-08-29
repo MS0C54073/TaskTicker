@@ -5,7 +5,7 @@ import { ArrowRightLeft, ArrowLeftRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { translate } from '@/ai/flows/translate-flow';
+import { translateAction } from '@/ai/actions';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export function Translator() {
@@ -22,7 +22,7 @@ export function Translator() {
     setTranslatedText('');
 
     try {
-      const result = await translate({ text: inputText });
+      const result = await translateAction({ text: inputText });
       setTranslatedText(result.translatedText);
     } catch (err) {
       setError('Sorry, something went wrong during translation. Please try again.');
