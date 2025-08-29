@@ -2,6 +2,8 @@
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Filter } from "@/app/page";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/lib/translations";
 
 interface FilterTabsProps {
   filter: Filter;
@@ -9,6 +11,9 @@ interface FilterTabsProps {
 }
 
 export default function FilterTabs({ filter, setFilter }: FilterTabsProps) {
+  const { language } = useLanguage();
+  const t = translations[language];
+
   return (
     <div className="px-6 mb-4">
       <Tabs
@@ -17,9 +22,9 @@ export default function FilterTabs({ filter, setFilter }: FilterTabsProps) {
         className="w-full"
       >
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="all">All</TabsTrigger>
-          <TabsTrigger value="active">Active</TabsTrigger>
-          <TabsTrigger value="completed">Completed</TabsTrigger>
+          <TabsTrigger value="all">{t.filterAll}</TabsTrigger>
+          <TabsTrigger value="active">{t.filterActive}</TabsTrigger>
+          <TabsTrigger value="completed">{t.filterCompleted}</TabsTrigger>
         </TabsList>
       </Tabs>
     </div>

@@ -5,6 +5,8 @@ import { Plus, Sparkles, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { suggestTaskAction } from "@/ai/actions";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/lib/translations";
 
 interface TaskInputProps {
   onAddTask: (text: string) => void;
@@ -13,6 +15,8 @@ interface TaskInputProps {
 export default function TaskInput({ onAddTask }: TaskInputProps) {
   const [taskText, setTaskText] = useState("");
   const [isSuggesting, setIsSuggesting] = useState(false);
+  const { language } = useLanguage();
+  const t = translations[language];
 
   const handleAddTask = () => {
     if (taskText.trim()) {
@@ -44,15 +48,15 @@ export default function TaskInput({ onAddTask }: TaskInputProps) {
     <div className="flex w-full items-center space-x-2">
       <Input
         type="text"
-        placeholder="What needs to be done?"
+        placeholder={t.inputPlaceholder}
         value={taskText}
         onChange={(e) => setTaskText(e.target.value)}
         onKeyDown={handleKeyDown}
         className="flex-1 text-base h-11"
-        aria-label="New task input"
+        aria-label={t.inputAriaLabel}
         disabled={isSuggesting}
       />
-      <Button onClick={handleSuggestTask} size="icon" variant="outline" disabled={isSuggesting} aria-label="Suggest a task">
+      <Button onClick={handleSuggestTask} size="icon" variant="outline" disabled={isSuggesting} aria-label={t.suggestButtonAriaLabel}>
         {isSuggesting ? (
           <Loader2 className="h-5 w-5 animate-spin" />
         ) : (
@@ -61,7 +65,7 @@ export default function TaskInput({ onAddTask }: TaskInputProps) {
       </Button>
       <Button onClick={handleAddTask} size="lg" disabled={isSuggesting}>
         <Plus className="h-5 w-5" />
-        <span className="sr-only sm:not-sr-only sm:ml-2">Add</span>
+        <span className="sr-only sm:not-sr-only sm:ml-2">{t.addButton}</span>
       </Button>
     </div>
   );

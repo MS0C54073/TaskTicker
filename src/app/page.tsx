@@ -7,6 +7,10 @@ import FilterTabs from "@/components/todo/FilterTabs";
 import TaskList from "@/components/todo/TaskList";
 import TodoFooter from "@/components/todo/TodoFooter";
 import { Translator } from "@/components/todo/Translator";
+import { LanguageProvider } from "@/context/LanguageContext";
+import LanguageSwitcher from "@/components/todo/LanguageSwitcher";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/lib/translations";
 
 export type Task = {
   id: string;
@@ -23,9 +27,11 @@ const initialTasks: Task[] = [
   { id: '3', text: 'Deploy to the web', completed: false, createdAt: Date.now() },
 ];
 
-export default function Home() {
+function TodoApp() {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [filter, setFilter] = useState<Filter>("all");
+  const { language } = useLanguage();
+  const t = translations[language];
 
   const addTask = (text: string) => {
     if (text.trim() === "") return;
@@ -60,7 +66,7 @@ export default function Home() {
       case "active":
         return sortedTasks.filter((task) => !task.completed);
       case "completed":
-        return sortedTasks.filter((task) => !task.completed);
+        return sortedTasks.filter((task) => task.completed);
       default:
         return sortedTasks;
     }
@@ -75,39 +81,51 @@ export default function Home() {
   }, [tasks]);
 
   return (
-    <main className="flex min-h-screen w-full flex-col items-center bg-background p-4 sm:p-6 md:p-8 font-body">
-      <div className="w-full max-w-lg mt-8">
-        <header className="text-center mb-6">
-          <h1 className="text-6xl font-extrabold text-primary tracking-tighter">
-            Task Ticker
-          </h1>
-        </header>
+    <div className="w-full max-w-lg mt-8">
+      <header className="text-center mb-6 relative">
+        <h1 className="text-6xl font-extrabold text-primary tracking-tighter">
+          {t.title}
+        </h1>
+        <div className="absolute top-1/2 -translate-y-1/2 right-0">
+          <LanguageSwitcher />
+        </div>
+      </header>
 
-        <Card className="w-full shadow-lg rounded-lg mb-8">
-          <CardHeader className="p-6">
-            <TaskInput onAddTask={addTask} />
-          </CardHeader>
-          <CardContent className="p-0">
-            <FilterTabs filter={filter} setFilter={setFilter} />
-            <div className="px-6 pb-6">
-              <TaskList
-                tasks={filteredTasks}
-                onToggleTask={toggleTask}
-                onDeleteTask={deleteTask}
-              />
-            </div>
-          </CardContent>
-          <CardFooter className="p-4 border-t bg-muted/30 rounded-b-lg">
-            <TodoFooter
-              activeCount={activeCount}
-              hasCompletedTasks={hasCompletedTasks}
-              onClearCompleted={clearCompleted}
+      <Card className="w-full shadow-lg rounded-lg mb-8">
+        <CardHeader className="p-6">
+          <TaskInput onAddTask={addTask} />
+        </CardHeader>
+        <CardContent className="p-0">
+          <FilterTabs filter={filter} setFilter={setFilter} />
+          <div className="px-6 pb-6">
+            <TaskList
+              tasks={filteredTasks}
+              onToggleTask={toggleTask}
+              onDeleteTask={deleteTask}
             />
-          </CardFooter>
-        </Card>
+          </div>
+        </CardContent>
+        <CardFooter className="p-4 border-t bg-muted/30 rounded-b-lg">
+          <TodoFooter
+            activeCount={activeCount}
+            hasCompletedTasks={hasCompletedTasks}
+            onClearCompleted={clearCompleted}
+          />
+        </CardFooter>
+      </Card>
 
-        <Translator />
-      </div>
-    </main>
+      <Translator />
+    </div>
+  );
+}
+
+
+export default function Home() {
+  return (
+    <LanguageProvider>
+      <main className="flex min-h-screen w-full flex-col items-center bg-background p-4 sm:p-6 md:p-8 font-body">
+        <TodoApp />
+      </main>
+    </LanguageProvider>
   );
 }

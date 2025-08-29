@@ -7,12 +7,16 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { translateAction } from '@/ai/actions';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useLanguage } from '@/context/LanguageContext';
+import { translations } from '@/lib/translations';
 
 export function Translator() {
   const [inputText, setInputText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { language } = useLanguage();
+  const t = translations[language];
 
   const handleTranslate = async () => {
     if (!inputText.trim()) return;
@@ -25,7 +29,7 @@ export function Translator() {
       const result = await translateAction({ text: inputText });
       setTranslatedText(result.translatedText);
     } catch (err) {
-      setError('Sorry, something went wrong during translation. Please try again.');
+      setError(t.translatorError);
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -42,15 +46,15 @@ export function Translator() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-2xl">
           <ArrowRightLeft className="h-6 w-6 text-primary" />
-          <span>Translator</span>
+          <span>{t.translatorTitle}</span>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid gap-2 relative">
-          <label htmlFor="input-text" className="text-sm font-medium text-muted-foreground">English / Russian</label>
+          <label htmlFor="input-text" className="text-sm font-medium text-muted-foreground">{t.translatorInputLabel}</label>
           <Textarea
             id="input-text"
-            placeholder="Type or paste text here..."
+            placeholder={t.translatorInputPlaceholder}
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             className="min-h-[100px] text-base"
@@ -59,16 +63,16 @@ export function Translator() {
         </div>
         
         <div className="flex justify-center items-center my-[-8px]">
-            <Button variant="ghost" size="icon" onClick={handleSwap} disabled={isLoading} aria-label="Swap languages">
+            <Button variant="ghost" size="icon" onClick={handleSwap} disabled={isLoading} aria-label={t.swapButtonAriaLabel}>
                 <ArrowLeftRight className="h-5 w-5 text-muted-foreground" />
             </Button>
         </div>
 
         <div className="grid gap-2">
-           <label htmlFor="output-text" className="text-sm font-medium text-muted-foreground">Translation</label>
+           <label htmlFor="output-text" className="text-sm font-medium text-muted-foreground">{t.translatorOutputLabel}</label>
            <Textarea
              id="output-text"
-             placeholder="Translation will appear here..."
+             placeholder={t.translatorOutputPlaceholder}
              value={translatedText}
              readOnly
              className="min-h-[100px] text-base bg-muted/40"
@@ -90,7 +94,7 @@ export function Translator() {
         
         <div className="flex justify-center">
           <Button onClick={handleTranslate} disabled={isLoading || !inputText.trim()}>
-            {isLoading ? 'Translating...' : 'Translate'}
+            {isLoading ? t.translatingButton : t.translateButton}
           </Button>
         </div>
 
