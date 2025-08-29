@@ -4,9 +4,15 @@ import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/context/LanguageContext';
 import { Languages } from 'lucide-react';
 
+/**
+ * A button component that toggles the application's language between English and Russian.
+ */
 export default function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage();
 
+  /**
+   * Toggles the language state.
+   */
   const toggleLanguage = () => {
     setLanguage(language === 'en' ? 'ru' : 'en');
   };

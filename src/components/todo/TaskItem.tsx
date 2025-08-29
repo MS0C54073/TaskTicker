@@ -6,12 +6,21 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Task } from "@/app/page";
 
+/**
+ * Props for the TaskItem component.
+ */
 interface TaskItemProps {
+  /** The task object to display. */
   task: Task;
+  /** Callback function to toggle the task's completion status. */
   onToggle: (id: string) => void;
+  /** Callback function to delete the task. */
   onDelete: (id: string) => void;
 }
 
+/**
+ * A component that displays a single task item with a checkbox and a delete button.
+ */
 export default function TaskItem({ task, onToggle, onDelete }: TaskItemProps) {
   return (
     <li

@@ -2,12 +2,22 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/context/LanguageContext";
 import { translations } from "@/lib/translations";
 
+/**
+ * Props for the TodoFooter component.
+ */
 interface TodoFooterProps {
+  /** The number of active (incomplete) tasks. */
   activeCount: number;
+  /** A boolean indicating if there are any completed tasks. */
   hasCompletedTasks: boolean;
+  /** Callback function to clear all completed tasks. */
   onClearCompleted: () => void;
 }
 
+/**
+ * The footer component for the to-do list.
+ * It displays the count of active items and a "Clear completed" button.
+ */
 export default function TodoFooter({
   activeCount,
   hasCompletedTasks,

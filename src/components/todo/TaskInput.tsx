@@ -7,15 +7,26 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/context/LanguageContext";
 import { translations } from "@/lib/translations";
 
+/**
+ * Props for the TaskInput component.
+ */
 interface TaskInputProps {
+  /** Callback function to add a new task. */
   onAddTask: (text: string) => void;
 }
 
+/**
+ * A component with an input field and a button to add new tasks.
+ */
 export default function TaskInput({ onAddTask }: TaskInputProps) {
   const [taskText, setTaskText] = useState("");
   const { language } = useLanguage();
   const t = translations[language];
 
+  /**
+   * Handles the click event for the "Add" button.
+   * Trims the input text and calls the onAddTask callback if the text is not empty.
+   */
   const handleAddTask = () => {
     if (taskText.trim()) {
       onAddTask(taskText.trim());
@@ -23,6 +34,11 @@ export default function TaskInput({ onAddTask }: TaskInputProps) {
     }
   };
 
+  /**
+   * Handles the keydown event for the input field.
+   * If the "Enter" key is pressed, it calls handleAddTask.
+   * @param event - The keyboard event.
+   */
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       handleAddTask();

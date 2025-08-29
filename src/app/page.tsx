@@ -11,6 +11,9 @@ import LanguageSwitcher from "@/components/todo/LanguageSwitcher";
 import { useLanguage } from "@/context/LanguageContext";
 import { translations } from "@/lib/translations";
 
+/**
+ * Represents a single task item.
+ */
 export type Task = {
   id: string;
   text: string;
@@ -18,16 +21,30 @@ export type Task = {
   createdAt: number;
 };
 
+/**
+ * Defines the available filter types for tasks.
+ */
 export type Filter = "all" | "active" | "completed";
 
+/**
+ * The initial state for the tasks list, which is empty.
+ */
 const initialTasks: Task[] = [];
 
+/**
+ * The main component for the To-Do application.
+ * It manages tasks, filters, and UI rendering.
+ */
 function TodoApp() {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [filter, setFilter] = useState<Filter>("all");
   const { language } = useLanguage();
   const t = translations[language];
 
+  /**
+   * Adds a new task to the list.
+   * @param text - The text content of the new task.
+   */
   const addTask = (text: string) => {
     if (text.trim() === "") return;
     const newTask: Task = {
@@ -39,6 +56,10 @@ function TodoApp() {
     setTasks((prevTasks) => [newTask, ...prevTasks]);
   };
 
+  /**
+   * Toggles the completion status of a specific task.
+   * @param id - The ID of the task to toggle.
+   */
   const toggleTask = (id: string) => {
     setTasks(
       tasks.map((task) =>
@@ -47,14 +68,24 @@ function TodoApp() {
     );
   };
 
+  /**
+   * Deletes a task from the list.
+   * @param id - The ID of the task to delete.
+   */
   const deleteTask = (id: string) => {
     setTasks(tasks.filter((task) => task.id !== id));
   };
   
+  /**
+   * Removes all completed tasks from the list.
+   */
   const clearCompleted = () => {
     setTasks(tasks.filter((task) => !task.completed));
   };
 
+  /**
+   * Filters and sorts tasks based on the current filter and creation date.
+   */
   const filteredTasks = useMemo(() => {
     const sortedTasks = [...tasks].sort((a, b) => b.createdAt - a.createdAt);
     switch (filter) {
@@ -67,10 +98,16 @@ function TodoApp() {
     }
   }, [tasks, filter]);
   
+  /**
+   * Calculates the number of active (incomplete) tasks.
+   */
   const activeCount = useMemo(() => {
     return tasks.filter((task) => !task.completed).length;
   }, [tasks]);
   
+  /**
+   * Checks if there are any completed tasks.
+   */
   const hasCompletedTasks = useMemo(() => {
     return tasks.some((task) => task.completed);
   }, [tasks]);
@@ -112,7 +149,9 @@ function TodoApp() {
   );
 }
 
-
+/**
+ * The home page component that wraps the TodoApp with the language provider.
+ */
 export default function Home() {
   return (
     <LanguageProvider>
