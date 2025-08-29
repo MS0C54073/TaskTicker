@@ -6,6 +6,7 @@ import TaskInput from "@/components/todo/TaskInput";
 import FilterTabs from "@/components/todo/FilterTabs";
 import TaskList from "@/components/todo/TaskList";
 import TodoFooter from "@/components/todo/TodoFooter";
+import { Translator } from "@/components/todo/Translator";
 
 export type Task = {
   id: string;
@@ -59,7 +60,7 @@ export default function Home() {
       case "active":
         return sortedTasks.filter((task) => !task.completed);
       case "completed":
-        return sortedTasks.filter((task) => task.completed);
+        return sortedTasks.filter((task) => !task.completed);
       default:
         return sortedTasks;
     }
@@ -82,7 +83,7 @@ export default function Home() {
           </h1>
         </header>
 
-        <Card className="w-full shadow-lg rounded-lg">
+        <Card className="w-full shadow-lg rounded-lg mb-8">
           <CardHeader className="p-6">
             <TaskInput onAddTask={addTask} />
           </CardHeader>
@@ -104,6 +105,8 @@ export default function Home() {
             />
           </CardFooter>
         </Card>
+
+        <Translator />
       </div>
     </main>
   );
